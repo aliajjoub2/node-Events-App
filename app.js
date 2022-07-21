@@ -4,24 +4,15 @@ const app = express()
 
 app.set('view engine', 'ejs')
 
+
+
+// add database.js
+const db = require('./config/database')
+
 //bring static
 
 app.use(express.static('public'))
 app.use(express.static('node_modules'))
-
-// connect MongoDB
- 
-const mongoose = require('mongoose');
- 
-mongoose.connect("mongodb+srv://ali-ajjoub:ali.node1984@cluster0.pxc5n.mongodb.net/?retryWrites=true&w=majority")
-  .then( result => {
-    app.listen(port, () => {
-      console.log(`Example app listening on port ${port}`)
-    });
-  })
-  .catch( err => {
-    console.log(err);
-  }); 
 
   
 app.get('/', (req,res)=> {
@@ -39,4 +30,4 @@ app.use('/events', events)
 app.listen(3000, ()=> {
 
     console.log(' app is wokring on port 3000')
-})
+}) 
