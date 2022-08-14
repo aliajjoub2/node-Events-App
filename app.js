@@ -39,6 +39,12 @@ app.get('/', (req,res)=> {
 const events = require('./routes/event-routes')
 app.use('/events', events)
 
+// bring user routes
+const users = require('./routes/user-routes')
+app.use('/users', users)
+
+
+
 // listen to port 3000
 
 app.listen(3000, ()=> {
