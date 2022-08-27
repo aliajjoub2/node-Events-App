@@ -13,9 +13,10 @@
                     <p><%=ali.location%></p>
                     <p><span class="badge badge-secondary"><%=ali.date%></span></p>
                     
-    
-                    <a href="<%= '/events/edit/' + ali.id %>" class="btn btn-primary">Edit</a>
-                    <button class="btn btn-danger" onclick="deleteEvent()" id="deleteBtn" data-id="<%= ali.id%>">Delete</button>
+                    <% if ((user) && (user.id == ali.user_id )) {%>
+                        <a href="<%= '/events/edit/' + ali.id %>" class="btn btn-primary">Edit</a>
+                        <button class="btn btn-danger" onclick="deleteEvent()" id="deleteBtn" data-id="<%= ali.id%>">Delete</button>
+                    <%}%>
                     
                 </div>
             </div>

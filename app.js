@@ -6,6 +6,11 @@ const db = require('./config/database')
 const session = require('express-session')
 const flash = require('connect-flash')
 
+// add passport 
+const passport = require('passport')
+const passportSetup = require('./config/passport-setup')
+
+
 
 // bring ejs template
 app.set('view engine', 'ejs')
@@ -26,12 +31,22 @@ app.use(session({
     saveUninitialized: false,
     cookie: {maxAge: 60000 * 15}
 }))
+
+
 app.use(flash())
+// bring passport 
+app.use(passport.initialize())
+app.use(passport.session())
+//store user object , save user information and used in any place in the app, te placee after session important
+app.get('*', (req,res,next)=> {
+    res.locals.user = req.user 
+    next()
+})
 
   
 app.get('/', (req,res)=> {
 
-    res.send(" it is working from web")
+    res.redirect('/events')
 })
 
 // bringg events routes

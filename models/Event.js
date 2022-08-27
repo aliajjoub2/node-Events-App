@@ -20,6 +20,10 @@ const eventSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
+    user_id : {
+        type: String,
+        required: true
+    },
 })
 
 let Event = mongoose.model('Event', eventSchema, 'alitest')

@@ -8,6 +8,12 @@ const { check, validationResult } = require('express-validator/check')
 const moment = require('moment');
 moment().format();
 
+// middleware to check if user is loogged in
+
+isAuthenticated = (req,res,next) => {
+    if (req.isAuthenticated()) return next()
+    res.redirect('/users/login')
+}
 
 // route to home events
 router.get('/', (req,res)=> {   
@@ -29,7 +35,7 @@ router.get('/', (req,res)=> {
 
 //create new events
 
-router.get('/create', (req,res)=> {
+router.get('/create', isAuthenticated, (req,res)=> {
 
     res.render('event/create', {
         errors: req.flash('errors')
@@ -57,7 +63,8 @@ router.post('/create', [
             description: req.body.description,
             date: req.body.date,
             location: req.body.location,
-            created_at: Date.now()
+            created_at: Date.now(),
+            user_id:  req.user.id,
         })
 
         newEvent.save( (err)=> {
@@ -93,9 +100,9 @@ router.get('/:id', (req,res)=> {
 
 // edit route
 
-router.get('/edit/:id', (req,res)=> {
+router.get('/edit/:id', isAuthenticated,(req,res)=> {
 
-    Event.findOne({_id: req.params.id}, (err,event)=> {
+    Event.findOne({_id: req.params.id},  (err,event)=> {
         
         if(!err) {
        
@@ -122,7 +129,7 @@ router.post('/update',[
     check('location').isLength({min: 3}).withMessage('Location should be more than 5 char'),
     check('date').isLength({min: 5}).withMessage('Date should valid Date'),
 
-], (req,res)=> {
+], isAuthenticated, (req,res)=> {
     
     const errors = validationResult(req)
     if( !errors.isEmpty()) {
@@ -152,7 +159,7 @@ router.post('/update',[
 })
 //delete event
 
-router.delete('/delete/:id', (req,res)=> {
+router.delete('/delete/:id', isAuthenticated,(req,res)=> {
 
     let query = {_id: req.params.id}
 
